@@ -8,13 +8,29 @@ use bevy::prelude::*;
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins)
+        .add_plugins(DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                title: "Asteroid Juggler".to_string().into(),
+                resolution: (1920., 1080.).into(),
+                ..Default::default()
+            }),
+            ..default()
+        }))
+        //.add_systems(Startup, startup_screen)
         .add_systems(Startup, setup)
         .run();
 }
 
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(Camera2dBundle::default());
+    commands.spawn(SpriteBundle {
+        texture: asset_server.load("planets/planet00.png"),
+        transform: Transform::from_scale(Vec3::splat(0.15)),
+        ..Default::default()
+    });
+}
+
+fn startup_screen(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(SpriteBundle {
         texture: asset_server.load("start_screen.png"),
         ..Default::default()
