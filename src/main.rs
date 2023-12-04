@@ -11,7 +11,7 @@ fn main() {
     App::new()
         .add_plugins(DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
-                title: "Asteroid Juggler".to_string().into(),
+                title: "Asteroid Juggler".to_string(),
                 resolution: (1920., 1080.).into(),
                 ..Default::default()
             }),
@@ -28,13 +28,12 @@ fn setup(mut commands: Commands) {
     commands.spawn(Camera2dBundle::default());
 }
 
-fn startup_screen(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.spawn(SpriteBundle {
-        texture: asset_server.load("start_screen.png"),
-        ..Default::default()
-    });
-}
-
+//fn startup_screen(mut commands: Commands, asset_server: Res<AssetServer>) {
+//    commands.spawn(SpriteBundle {
+//        texture: asset_server.load("start_screen.png"),
+//        ..Default::default()
+//    });
+//}
 
 fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(SpriteBundle {
@@ -46,30 +45,25 @@ fn spawn_player(mut commands: Commands, asset_server: Res<AssetServer>) {
 
 fn spawn_asteroid(
     mut commands: Commands,
-    window_query: Query<&Window, With<PrimaryWindow>>, 
-    asset_server: Res<AssetServer>) {
-    
-
+    window_query: Query<&Window, With<PrimaryWindow>>,
+    asset_server: Res<AssetServer>,
+) {
     let window = window_query.get_single().unwrap();
 
     for _ in 0..1000 {
-        let x = random::<f32>() * window.width() - window.width() / 2.0;  
+        let x = random::<f32>() * window.width() - window.width() / 2.0;
         let y = random::<f32>() * window.height() - window.height() / 2.0;
 
-        commands.spawn(
-            SpriteBundle {
+        commands.spawn(SpriteBundle {
             texture: asset_server.load("asteroids/meteorGrey_tiny1.png"),
             transform: Transform::from_xyz(x, y, 0.0),
             ..default()
         });
-
     }
-    
-    
+
     //commands.spawn(SpriteBundle {
     //    texture: asset_server.load("asteroids/asteroid00.png"),
     //    transform: Transform::from_scale(Vec3::splat(0.15)),
     //    ..Default::default()
     //    });
 }
-
